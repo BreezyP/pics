@@ -1,10 +1,15 @@
 import React from 'react';
 import axios from 'axios'
 import SearchBar from "./SearchBar";
+import CardDetail from "./CardDetail";
 
 class App extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = { images: [] };
+    }
 
-    async onSearchSubmit(term){
+    onSearchSubmit = async (term) => {
         const response = await axios.get('https://api.unsplash.com/search/photos', {
             params: { query: term },
             headers: {
@@ -12,7 +17,22 @@ class App extends React.Component {
             }
         });
 
-        console.log(response.data.results);
+        this.setState({images: response.data.results});
+        console.log(this.state.images);
+
+    };
+
+    renderContent(){
+
+        let thing = [];
+
+        for(let i = 0; i < this.state.images.length; i++){
+            thing.push(<CardDetail img={this.state.images[i].links.html}/>);
+            console.log(this.state.images[i].links.html);
+
+        }
+
+        return thing;
 
     }
 
@@ -23,6 +43,9 @@ class App extends React.Component {
                     <div className="col-3">
                         <SearchBar onSubmit={this.onSearchSubmit} />
                     </div>
+                </div>
+                <div className="row">
+                    {this.renderContent()}
                 </div>
             </div>
         );
