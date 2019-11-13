@@ -6,16 +6,27 @@ import {
 } from 'reactstrap';
 
 class CardDetail extends React.Component {
+    constructor(props){
+        super(props);
+
+        this.imageRef = React.createRef();
+    }
+
+    componentDidMount() {
+        this.imageRef.current.addEventListener('load', () => {
+            console.log(this.imageRef.current.clientHeight);
+        })
+    }
+
 
     render() {
         return (
-            <div className='col-3 mt-3'>
-                <Card>
+                <Card className='col-3 mx-3 mb-3'>
                     <CardBody>
                         <CardTitle>Card title</CardTitle>
                         <CardSubtitle>Card subtitle</CardSubtitle>
                     </CardBody>
-                    <img width="100%" src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1447&q=80" alt="Card image cap"/>
+                    <img ref={this.imageRef} width="100%" src={this.props.img} alt="Card image cap"/>
                     <CardBody>
                         <CardText>{this.props.img}Some quick example text to build on the card title and make up the bulk of the card's
                             content.</CardText>
@@ -23,7 +34,6 @@ class CardDetail extends React.Component {
                         <CardLink href="#">Another Link</CardLink>
                     </CardBody>
                 </Card>
-            </div>
         );
     }
 }
